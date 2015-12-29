@@ -1,16 +1,23 @@
-FROM resin/raspberrypi-python
-
+FROM resin/rpi-raspbian:jessie
+MAINTAINER BASEBOXORG
 # Enable systemd
-ENV INITSYSTEM on
+# ENV DEBIAN_FRONTEND noninteractive
 
-# Install Python.
-RUN apt-get update \
-	&& apt-get install -y python \
-	# Remove package lists to free up space
-	&& rm -rf /var/lib/apt/lists/*
+# Install Webmin
+RUN apt-get update && \
+		apt-get install -y wget dpkg-reconfigure locales nfs-kernel-server runit inotify-tools && \
+		locale-gen C.UTF-8 && \
+		/usr/sbin/update-locale LANG=C.UTF-8 && \
+		mkdir -p /exports && \
+		mkdir -p /etc/sv/nfs && \
+		rm -rf /var/lib/apt/lists/*
 
-# copy current directory into /app
-COPY . /app
+ADD nfs.init /etc/sv/nfs/run && \
+		nfs.stop /etc/sv/nfs/finish && \
+		nfs_setup.sh /usr/local/bin/nfs_setup && \
 
-# run python script when container lands on device
-CMD ["python", "/app/hello.py"]
+VOLUME ["/exports"]
+
+EXPOSE 111/udp 2049/tcp
+
+ENTRYPOINT ["/usr/local/bin/nfs_setup"]
