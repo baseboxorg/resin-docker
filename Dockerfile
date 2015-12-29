@@ -1,11 +1,13 @@
 FROM resin/rpi-raspbian:jessie
 MAINTAINER BASEBOXORG
 # Enable systemd
-# ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND noninteractive
 
 # Install Webmin
 RUN apt-get update && \
-		apt-get install -y wget dpkg-reconfigure locales nfs-kernel-server runit inotify-tools && \
+		apt-get install -y wget nfs-kernel-server runit inotify-tools && \
+		locales && \
+		dpkg-reconfigure locales && \
 		locale-gen C.UTF-8 && \
 		/usr/sbin/update-locale LANG=C.UTF-8 && \
 		mkdir -p /exports && \
