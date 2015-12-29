@@ -1,8 +1,7 @@
 FROM resin/rpi-raspbian:jessie
 MAINTAINER BASEBOXORG
-# Enable systemd
-ENV DEBIAN_FRONTEND noninteractive
-
+ENV Enable systemd
+# ENV DEBIAN_FRONTEND noninteractive
 # Install Webmin
 RUN apt-get update && \
 		apt-get install -y wget nfs-kernel-server runit inotify-tools && \
@@ -16,7 +15,9 @@ RUN apt-get update && \
 
 ADD nfs.init /etc/sv/nfs/run && \
 		nfs.stop /etc/sv/nfs/finish && \
-		nfs_setup.sh /usr/local/bin/nfs_setup && \
+		nfs_setup.sh /usr/local/bin/nfs_setup
+
+ENV LC_ALL C.UTF-8
 
 VOLUME ["/exports"]
 
