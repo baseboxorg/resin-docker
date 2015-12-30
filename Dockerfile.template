@@ -21,14 +21,16 @@ RUN apt-get update && apt-get install -y \
 # diamond app
 RUN apt-get install -y avahi-daemon yasm make g++ \
 	libboost-all-dev libssl-dev libcurl4-openssl-dev \
-	libdb++-dev libgmp-dev libminiupnpc-dev pax-utils &&\
+	libdb++-dev libgmp-dev libminiupnpc-dev &&\
 	apt-get clean &&\
 	rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /usr/src/dmd &&\
     git clone https://gitlab.com/rpio/diamond.git /usr/src/dmd &&\
+		make -f makefile.unix clean &&\
     mkdir -p /usr/src/dmd/src/obj &&\
-		make -f /usr/src/dmd/src/makefile.unix xCPUARCH=armv7l USE_UPNP=- -e PIE=1
+		make STATIC=1 -f /usr/src/dmd/src/makefile.unix xCPUARCH=armv7l diamondd
+		strip diamondd
 
 COPY /usr/src/dmd/src/diamondd /usr/local/bin
 RUN chmod +x /usr/local/bin/diamondd
