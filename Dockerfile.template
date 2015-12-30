@@ -1,5 +1,7 @@
 FROM resin/%%RESIN_MACHINE_NAME%%-node:0.10.40
 
+ENV INITSYSTEM on
+
 # Note we added the python dependencies after resin-wifi-connect's deps.
 RUN apt-get update && apt-get install -y \
 		bind9 \
