@@ -21,20 +21,24 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		python-dev \
 		python-dbus \
 		python-pip \
-    avahi-daemon yasm \
-		libboost-all-dev libssl-dev \
-		libdb++-dev libgmp-dev libminiupnpc-dev &&\
+    avahi-daemon \
+    yasm \
+		libboost-all-dev \
+    libssl-dev \
+		libdb++-dev \
+    libgmp-dev \
+    libminiupnpc-dev &&\
 		apt-get clean &&\
 		rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://gitlab.com/rpio/diamond.git /usr/src/diamond &&\
 		cd /usr/src/diamond/src &&\
-		make -f makefile.unix clean &&\
 		mkdir obj &&\
 		make STATIC=1 -f makefile.unix xCPUARCH=armv7l &&\
     strip diamondd &&\
-		cp diamondd /usr/bin &&\
-    chmod +x /usr/bin/diamondd &&\
+		mkdir -p /usr/local/bin &&\
+    cp /usr/src/diamond/src/diamondd /usr/local/bin &&\
+    chmod +x /usr/local\bin/diamondd &&\
 		rm -rf /usr/src/diamond
 
 RUN mkdir -p /usr/src/app && ln -s /usr/src/app /app
