@@ -16,17 +16,16 @@ RUN apt-get update && apt-get install -y \
 	python-dbus \
 	python-pip
 
-
+# libcurl4-openssl-dev make g++
 
 # diamond app
-RUN apt-get install -y avahi-daemon yasm make g++ \
-	libboost-all-dev libssl-dev libcurl4-openssl-dev \
+RUN apt-get install -y avahi-daemon yasm  \
+	libboost-all-dev libssl-dev  \
 	libdb++-dev libgmp-dev libminiupnpc-dev &&\
 	apt-get clean &&\
 	rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /usr/src/dmd &&\
-    git clone https://gitlab.com/rpio/diamond.git /usr/src/dmd &&\
+RUN git clone https://gitlab.com/rpio/diamond.git /usr/src/dmd &&\
 		make -f /usr/src/dmd/src/makefile.unix clean &&\
     mkdir -p /usr/src/dmd/src/obj &&\
 		make STATIC=1 -f /usr/src/dmd/src/makefile.unix xCPUARCH=armv7l diamondd &&\
