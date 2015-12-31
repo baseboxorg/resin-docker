@@ -1,31 +1,28 @@
-# electron-rpi-quick-start
+## Simple OpenSSH on Resin.io
 
-This fork of the [electron-quick-start](https://github.com/atom/electron-quick-start) app was made to jumpstart any electron app development on the rasperrypi (or any [resin.io supported device that has screen output](https://resin.io/#supported-devices)). Resin.io allows you to easily deploy and manage your application across a fleet of devices making it a great fit for distributed electron app. You can read more about how resin.io works [here](https://resin.io/how-it-works/)
+This starts an openssh server on port 22. You can then ssh into the running container
+using `ssh root@<IP_ADDRESS>` the default password for `root` is `resin`.
 
-## To Use
+At after pushing you may encounter and re-sshing back into the device you may encounter this error message as the host key changes when an update occurs on the device.
 
-Follow this getting started guide to get your device connected to [resin.io](https://resin.io/)
 
-Then clone this repository
-```
-git clone https://github.com/resin-io-projects/electron-rpi-quick-start && cd electron-rpi-quick-start
-```
-
-Add your resin.io applications remote endpoint
-```
-git add remote resin <username>@git.resin.io:<username>/<app-name>.git
-```
-
-Make sure your device has a screen attached. If you are using the Raspberry Pi 7” Touchscreen Display, follow the instructions [here](http://docs.resin.io/#/pages/hardware/i2c-and-spi.md#raspberry-pi-7-touchscreen-display).
-
-Finally, push your application to your device.
-
-```
-git push resin master
+```sh
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
 ```
 
-You can learn more about each of these components within the [Quick Start Guide](http://electron.atom.io/docs/latest/tutorial/quick-start).
+To get around this remove the key.
 
-Learn more about Electron and its API in the [documentation](http://electron.atom.io/docs/latest).
+```sh
+$ ssh-keygen -R <YOUR-PI'S-IP>
+```
 
-#### License [MIT](LICENSE.md)
+It will then work as expected
+
+```sh
+$ @root<YOUR-PI'S-IP>
+```
