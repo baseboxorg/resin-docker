@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
 	python-dev \
 	python-dbus \
 	python-pip \
+	ca-certificates \
 	&& rm -rf /var/lib/apt/lists/*
 
 COPY ./assets/bind /etc/bind
@@ -35,6 +36,13 @@ RUN ./node_modules/.bin/coffee -c ./src
 RUN chmod +x ./start
 
 VOLUME /var/lib/connman
+
+
+# ADD Diamond src
+# Compile Diamond
+# VOLUME
+# CMD Start the APP
+
 
 # Here we add the pip Flask package
 RUN pip install flask

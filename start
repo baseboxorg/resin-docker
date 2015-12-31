@@ -7,6 +7,11 @@ npm start
 # We run the Python app after the wifi connection has been established
 # and the previous command has exited.
 cd ./python-server && python main.py
+# start diamondd
+# wait 15mins
+# staking
+
+# if crashed or restart
 
 # If our Python server ever crashed/exited, the following loop will
 # allow us to still access our device on the web terminal.
