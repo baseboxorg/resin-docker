@@ -1,21 +1,14 @@
-FROM resin/%%RESIN_MACHINE_NAME%%-node:0.10.40
+FROM resin/amd64-supervisor
 
 # Note we added the python dependencies after resin-wifi-connect's deps.
-RUN apt-get update && apt-get install -y \
-	bind9 \
-	bridge-utils \
-	connman \
-	iptables \
-	libdbus-1-dev \
-	libexpat-dev \
-	net-tools \
-	usbutils \
-	wireless-tools \
-	python \
-	python-dev \
-	python-dbus \
-	python-pip \
-	&& rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y git curl build-essential bind9 bridge-utils connman iptables libdbus-1-dev libexpat-dev net-tools usbutils wireless-tools python python-dev python-dbus python-pip && rm -rf /var/lib/apt/lists/*
+
+# Install latest version of pip
+RUN curl -O https://bootstrap.pypa.io/get-pip.py && python get-pip.py
+
+# Install Node.JS
+RUN cd /usr/local && curl http://nodejs.org/dist/v0.10.40/node-v0.10.40-linux-x64.tar.gz | tar --strip-components=1 -zxf- && cd
+RUN npm -g update npm
 
 COPY ./assets/bind /etc/bind
 
